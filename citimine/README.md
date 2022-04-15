@@ -1,6 +1,6 @@
 ### 
 
-setup local mysql -- `bash setup_docker.sh`
+setup local mysql -- `bash create_db.sh`
 
 scrape data -- `bash scrape.sh`
 
