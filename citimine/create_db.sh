@@ -2,7 +2,7 @@
 set -euo pipefail
 
 CONTAINER_NAME=citimine-mysql
-IMAGE_NAME=mysql:debian
+IMAGE_NAME=mysql:5.7.38-debian
 
 function clean() {
     if [ "$(docker ps -q -a -f name=$CONTAINER_NAME)" ]; then
