@@ -16,6 +16,8 @@ case class Features(
         ${geometry.coordinates}
         capacity: ${properties.capacity}
         open docks: ${properties.capacity - properties.bikes_available}
+        bike angel action: ${properties.bike_angels_action}
+        bike angel points: ${properties.bike_angels_points}
     """
   }
 }

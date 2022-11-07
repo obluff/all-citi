@@ -29,27 +29,6 @@ object AngelAlerts {
     fetchData(cli).map(printBestRoutes(_, homeStationId))
   }
 
-  private def printBestRoutes(bs: BikeStatus, homeStationId: String): String = {
-    (for {
-      hs <- fetchHomeStation(bs, homeStationId)
-    } yield (
-      (describe(hs) :+
-        findClosestStations(hs, bs.features)
-          .map(describe))
-        .mkString("\n\n")
-    )).getOrElse("unable to find home station")
-  }
-
-  private def describe(s: Features): String = {
-    Seq(
-      s.description,
-      s.properties.bike_angels_action,
-      s.properties.bike_angels_points,
-      s.properties.bike_angels_digits,
-      s.properties.bikes_available
-    ).mkString("\n")
-  }
-
   private def fetchData(cli: Client[IO]): IO[BikeStatus] = {
     // todo -- make safe :lol:
     val uri = Uri
@@ -58,7 +37,15 @@ object AngelAlerts {
     cli.expect[BikeStatus](req)
   }
 
-  private def fetchHomeStation(
+  private def printBestRoutes(bs: BikeStatus, homeStationId: String): String = {
+    (for {
+      hs <- findHomeStation(bs, homeStationId)
+    } yield (
+      findClosestStations(hs, bs.features).map(_.description).mkString("\n\n")
+    )).getOrElse("unable to find home station")
+  }
+
+  private def findHomeStation(
       bs: BikeStatus,
       stationId: String
   ): Option[Features] = bs.features.find(_.properties.station_id == stationId)
