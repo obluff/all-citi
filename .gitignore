@@ -1,1 +1,46 @@
 .env
+
+/target/
+/.cache/
+/*/target/
+/*/*/target/
+lib_managed/
+src_managed/
+project/boot/
+project/project/
+src/project/
+src/main/project/target
+
+.history
+.cache
+logs/
+.sbtopts
+.env
+
+.idea
+*.iml
+*.log
+.ensime
+.ensime_cache/
+ensime.sbt
+.metals
+.bloop/
+project/**/metals.sbt
+.vim
+.vscode
+
+.DS_Store
+hs_*.log
+
+.bigquery/
+
+# asdf version manager directory
+.tool-versions
+
+# vim temporary files
+**.sw*
+
+# jenv
+.java-version
+
+.bsp
