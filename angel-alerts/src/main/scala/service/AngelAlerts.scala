@@ -25,7 +25,7 @@ object AngelAlerts {
   implicit val bikeStatusDecoder: EntityDecoder[IO, BikeStatus] =
     jsonOf[IO, BikeStatus]
 
-  def fetchStationInfo(cli: Client[IO], homeStationId: String): IO[String] = {
+  def run(cli: Client[IO], homeStationId: String): IO[String] = {
     fetchData(cli).map(printBestRoutes(_, homeStationId))
   }
 

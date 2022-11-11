@@ -1,17 +1,14 @@
 import cats.effect._
-import org.http4s.ember.client._
-import org.http4s.client._
-import service.AngelAlerts
-
+import service.AngelAlertsApp
+import org.typelevel.log4cats._
+import org.typelevel.log4cats.slf4j._
 object Main extends IOApp {
-  def run(args: List[String]): IO[ExitCode] = {
-    val homeStationId = "150"
-    EmberClientBuilder.default[IO].build.use { cli =>
-      AngelAlerts
-        .fetchStationInfo(cli, homeStationId)
-        .flatTap(IO.println)
-        .as(ExitCode.Success)
-    }
-  }
 
+  def run(args: List[String]): IO[ExitCode] = {
+    implicit val logger: Logger[IO] = LoggerFactory[IO].getLogger
+    val homeStationId = "150"
+    val app = new AngelAlertsApp[IO]
+    val lol = app.run(homeStationId)
+    lol.map(_ => ExitCode.Success)
+  }
 }
