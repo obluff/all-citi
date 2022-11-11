@@ -9,6 +9,7 @@ mine the s@#$ out of citi bike's data so i can complain to them about their lack
 ### angel alerts
 
 bike angel alerting system -- wip
+[note to self -- use this](https://ntfy.sh/docs/subscribe/phone/)
 
 ## setup
 

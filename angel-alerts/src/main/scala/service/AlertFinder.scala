@@ -1,22 +1,19 @@
 package service
-import service.{NotifierService, StationStatusService}
+import algebra.{StationStatus, Notifier}
 import cats.effect.Sync
 import cats.implicits._
 import models.{BikeStatus, Features}
 import org.typelevel.log4cats.Logger
-
-class AlertFinder[F[_]: Sync: Logger](
-    stationStatus: StationStatusService[F],
-    notifier: NotifierService[F]
+class AlertFinder[F[_]: Sync: Logger: StationStatus: Notifier](
 ) {
   def alert(
       homeStationId: String
   ): F[Unit] = {
     for {
-      status <- stationStatus.fetch(homeStationId)
+      status <- StationStatus[F].fetch(homeStationId)
       routes = printBestRoutes(status, homeStationId)
       _ <- Logger[F].info(routes)
-      _ <- notifier.notify(routes)
+      _ <- Notifier[F].notify(routes)
     } yield ()
   }
 

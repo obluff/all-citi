@@ -22,10 +22,9 @@ class AngelAlertsApp[F[_]: Async: Logger] {
 
   def run(hsId: String): F[Unit] = {
     EmberClientBuilder.default[F].build.use { cli =>
-      val alertFinder = new AlertFinder[F](
-        new StationStatusService[F](cli),
-        new NotifierService[F](cli)
-      )
+      implicit val af = new StationStatusService[F](cli)
+      implicit val nf = new NotifierService[F](cli)
+      val alertFinder = new AlertFinder[F]()
       alertFinder.alert(hsId)
     }
   }
