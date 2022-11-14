@@ -1,5 +1,7 @@
 package models
 
+/* Raw JSON from API that feeds the Citibike app (not open bikeshare feed) */
+
 case class BikeStatus(
     `type`: String,
     features: Seq[Features]
@@ -9,18 +11,7 @@ case class Features(
     `type`: String,
     geometry: Geometry,
     properties: Properties
-) {
-  def description: String = {
-    s"""${properties.name}
-        ${properties.station_id}
-        ${geometry.coordinates}
-        capacity: ${properties.capacity}
-        open docks: ${properties.capacity - properties.bikes_available}
-        bike angel action: ${properties.bike_angels_action}
-        bike angel points: ${properties.bike_angels_points}
-    """
-  }
-}
+)
 
 case class Geometry(
     `type`: String,
@@ -60,7 +51,7 @@ sealed trait BikeAngelsAction {
 object BikeAngelsAction {
   final case object Give extends BikeAngelsAction {
     val value = "give"
-    val mag = 1
+    val mag = -1
   }
   final case object Take extends BikeAngelsAction {
     val value = "take"

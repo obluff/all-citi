@@ -1,8 +1,8 @@
 package algebra
-import models.BikeStatus
+import models.BikeStation
 
 trait StationStatus[F[_]] {
-  def fetch(stationId: String): F[BikeStatus]
+  def fetchAll: F[Seq[BikeStation]]
 }
 
 object StationStatus {

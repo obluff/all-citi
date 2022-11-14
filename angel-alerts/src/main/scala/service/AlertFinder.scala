@@ -2,7 +2,7 @@ package service
 import algebra.{StationStatus, Notifier}
 import cats.effect.Sync
 import cats.implicits._
-import models.{BikeStatus, Features}
+import models.{BikeStation, BikeAngelMeta, BikeAngelsAction}
 import org.typelevel.log4cats.Logger
 class AlertFinder[F[_]: Sync: Logger: StationStatus: Notifier](
 ) {
@@ -10,49 +10,34 @@ class AlertFinder[F[_]: Sync: Logger: StationStatus: Notifier](
       homeStationId: String
   ): F[Unit] = {
     for {
-      status <- StationStatus[F].fetch(homeStationId)
+      status <- StationStatus[F].fetchAll
+      _ <- Logger[F].info(s"number of bikes ${status.size}")
       routes = printBestRoutes(status, homeStationId)
       _ <- Logger[F].info(routes)
       _ <- Notifier[F].notify(routes)
     } yield ()
   }
 
-  private def printBestRoutes(bs: BikeStatus, homeStationId: String): String = {
+  private def printBestRoutes(
+      allStations: Seq[BikeStation],
+      homeStationId: String
+  ): String = {
     (for {
-      hs <- findHomeStation(bs, homeStationId)
-    } yield findClosestStations(hs, bs.features)
+      hs <- allStations.find(_.meta.stationId == homeStationId)
+    } yield findClosestStations(hs, allStations)
       .map(_.description)
       .mkString("\n\n")).getOrElse("unable to find home station")
   }
 
-  private def findHomeStation(
-      bs: BikeStatus,
-      stationId: String
-  ): Option[Features] = bs.features.find(_.properties.station_id == stationId)
-
   private def findClosestStations(
-      homeStation: Features,
-      otherStations: Seq[Features]
-  ): Seq[Features] = {
+      homeStation: BikeStation,
+      otherStations: Seq[BikeStation]
+  ): Seq[BikeStation] = {
     otherStations
-      .sortBy(x =>
-        dist(homeStation.geometry.coordinates, x.geometry.coordinates)
-      )
-      .take(100)
-      .sortBy(x => scoreAngels(homeStation, x))
-      .take(10)
-  }
-
-  private def scoreAngels(
-      home: Features,
-      dest: Features
-  ): Int = {
-    (for {
-      ha <- home.properties.bike_angels_action
-      hp <- home.properties.bike_angels_points
-      da <- dest.properties.bike_angels_action
-      dp <- dest.properties.bike_angels_points
-    } yield (ha.mag * hp + da.mag * -1 * dp)).getOrElse(0)
+      .sortBy(x => dist(homeStation.meta.coords, x.meta.coords))
+      .take(20)
+      .sortBy(x => homeStation.angelMeta.transferPoints(x.angelMeta))
+//      .take(10)
   }
 
   private def dist(m: (Double, Double), n: (Double, Double)): Double = {
