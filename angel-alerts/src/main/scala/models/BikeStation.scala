@@ -25,7 +25,6 @@ case class StationMeta(
     docks: Int,
     bikesDisabled: Int,
     docksDisabled: Int
-//    ebikesAvailable: Int
 )
 
 case class BikeAngelMeta(
@@ -35,7 +34,18 @@ case class BikeAngelMeta(
 ) {
 
   def transferPoints(dest: BikeAngelMeta): Int = {
-    angelAction.mag * angelPoints + dest.angelAction.mag * (-1 * dest.angelPoints)
+
+    (angelAction, dest.angelAction) match {
+      case (BikeAngelsAction.Give, BikeAngelsAction.Give) => 0
+      case (BikeAngelsAction.Give, BikeAngelsAction.Take) =>
+        angelPoints + dest.angelPoints
+      case (BikeAngelsAction.Give, BikeAngelsAction.Neutral)    => angelPoints
+      case (BikeAngelsAction.Neutral, BikeAngelsAction.Neutral) => 0
+      case (BikeAngelsAction.Neutral, BikeAngelsAction.Take)    => dest.angelPoints
+      case (BikeAngelsAction.Neutral, BikeAngelsAction.Give)    => 0
+      case (BikeAngelsAction.Take, _) =>
+        0
+    }
   }
 }
 
@@ -57,7 +67,6 @@ object BikeStation {
           f.properties.docks_available,
           f.properties.bikes_disabled,
           f.properties.docks_disabled
-          //        eba
         ),
         BikeAngelMeta(
           baa,

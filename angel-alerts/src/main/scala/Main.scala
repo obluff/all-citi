@@ -8,7 +8,6 @@ object Main extends IOApp {
     implicit val logger: Logger[IO] = LoggerFactory[IO].getLogger
     val homeStationId = "150"
     val app = new AngelAlertsApp[IO]
-    val lol = app.run(homeStationId)
-    lol.map(_ => ExitCode.Success)
+    app.run(homeStationId).map(_ => ExitCode.Success)
   }
 }
