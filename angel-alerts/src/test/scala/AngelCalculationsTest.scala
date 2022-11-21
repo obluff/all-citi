@@ -22,7 +22,7 @@ class AngelCalculationsTest extends funsuite.AnyFunSuite {
   test(
     """Start at 2-point Pick Up station, bike to neutral station - 2 points"""
   ) {
-    val source = BikeAngelMeta(BikeAngelsAction.Take, 2, 2)
+    val source = BikeAngelMeta(BikeAngelsAction.Give, 2, 2)
     val dest = BikeAngelMeta(BikeAngelsAction.Neutral, 0, 0)
     assert(source.transferPoints(dest) == 2)
   }
@@ -48,6 +48,6 @@ class AngelCalculationsTest extends funsuite.AnyFunSuite {
   ) {
     val source = BikeAngelMeta(BikeAngelsAction.Give, 4, 4)
     val dest = BikeAngelMeta(BikeAngelsAction.Give, 4, 4)
-    assert(source.transferPoints(dest) == 6)
+    assert(source.transferPoints(dest) == 0)
   }
 }

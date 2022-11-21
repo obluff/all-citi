@@ -14,7 +14,8 @@ class AlertFinder[F[_]: Sync: Logger: StationStatus: Notifier](
       _ <- Logger[F].info(s"number of bikes ${status.size}")
       routes = printBestRoutes(status, homeStationId)
       _ <- Logger[F].info(routes)
-      _ <- Notifier[F].notify(routes)
+      nr <- Notifier[F].notify(routes)
+      _ <- Logger[F].info(nr.toString)
     } yield ()
   }
 

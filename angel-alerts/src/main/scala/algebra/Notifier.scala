@@ -1,7 +1,15 @@
 package algebra
 
+import models.NotifierResponse
+import org.http4s.dsl._
+import org.http4s.dsl.Http4sDsl
+import org.http4s.client.dsl.Http4sClientDsl
+
 trait Notifier[F[_]] {
-  def notify(message: String): F[Unit]
+  val dsl = Http4sClientDsl[F]
+  val clientdsl = Http4sDsl[F]
+
+  def notify(message: String): F[NotifierResponse]
 }
 
 object Notifier {

@@ -3,7 +3,7 @@ package service
 import cats.effect.Async
 import io.circe.Decoder
 import io.circe.generic.auto._
-import models.{BikeAngelsAction, BikeStatus}
+import models.{BikeAngelsAction, BikeStatus, NotifierRequest, NotifierResponse}
 import org.typelevel.log4cats.Logger
 import org.http4s._
 import org.http4s.circe._
@@ -19,6 +19,12 @@ class AngelAlertsApp[F[_]: Async: Logger] {
 
   implicit val decoder: EntityDecoder[F, BikeStatus] =
     jsonOf[F, BikeStatus]
+
+  implicit val notifierDecoder: EntityDecoder[F, NotifierResponse] =
+    jsonOf[F, NotifierResponse]
+
+  implicit val notifierEncoder: EntityEncoder[F, NotifierRequest] =
+    jsonEncoderOf[F, NotifierRequest]
 
   def run(hsId: String): F[Unit] = {
     EmberClientBuilder.default[F].build.use { cli =>
