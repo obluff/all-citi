@@ -1,4 +1,7 @@
 package models
+
+import scala.math
+
 case class BikeStation(
     meta: StationMeta,
     angelMeta: BikeAngelMeta
@@ -12,6 +15,12 @@ case class BikeStation(
         bike angel action: ${angelMeta.angelAction}
         bike angel points: ${angelMeta.angelPoints}
     """
+  }
+
+  def dist(other: BikeStation): Double = {
+    val m = meta.coords
+    val n = other.meta.coords
+    math.abs(m._1 - n._1) + math.abs(m._2 - n._2)
   }
 }
 
@@ -34,7 +43,6 @@ case class BikeAngelMeta(
 ) {
 
   def transferPoints(dest: BikeAngelMeta): Int = {
-
     (angelAction, dest.angelAction) match {
       case (BikeAngelsAction.Give, BikeAngelsAction.Give) => 0
       case (BikeAngelsAction.Give, BikeAngelsAction.Take) =>

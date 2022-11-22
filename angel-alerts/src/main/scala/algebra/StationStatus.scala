@@ -2,7 +2,7 @@ package algebra
 import models.BikeStation
 
 trait StationStatus[F[_]] {
-  def fetchAll: F[Seq[BikeStation]]
+  def fetch: F[Seq[BikeStation]]
 }
 
 object StationStatus {

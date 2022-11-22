@@ -11,7 +11,7 @@ class StationStatusService[F[_]: Sync](
     client: Client[F]
 )(implicit D: EntityDecoder[F, BikeStatus])
     extends StationStatus[F] {
-  override def fetchAll: F[Seq[BikeStation]] = {
+  override def fetch: F[Seq[BikeStation]] = {
     // don't feel like looking up this syntax rn
     val uri = Uri
       .unsafeFromString("https://layer.bicyclesharing.net/map/v1/nyc/stations")
