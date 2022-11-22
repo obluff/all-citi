@@ -2,14 +2,20 @@
 
 ## projects
 
-### citimine
-
-mine the s@#$ out of citi bike's data so i can complain to them about their lack of docks in the east village at night.
-
 ### angel alerts
 
-bike angel alerting system -- wip
-[note to self -- use this](https://ntfy.sh/docs/subscribe/phone/)
+bike angel route finding system. road to the [platinum planel](https://www.lyft.com/bikes/bay-wheels/bike-angels-rewards)
+
+- finds a """optimal""" angel route of size N
+- uploads results to ntfy.sh to view on my phone
+
+TODO -- deploy, fix algo
+
+### citimine
+
+-- DEPRECATED -- 
+
+mine the s@#$ out of citi bike's data so i can complain to them about their lack of docks in the east village at night.
 
 ## setup
 
