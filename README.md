@@ -4,7 +4,7 @@
 
 ### angel alerts
 
-bike angel route finding system. road to the [platinum planel](https://www.lyft.com/bikes/bay-wheels/bike-angels-rewards)
+bike angel route finding system. road to [power angel](https://www.lyft.com/bikes/bay-wheels/bike-angels-rewards)!
 
 - finds a """optimal""" angel route of size N
 - uploads results to ntfy.sh to view on my phone
